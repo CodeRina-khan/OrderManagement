@@ -1,0 +1,55 @@
+<div class="order-details-container">
+  <button (click)="goBack()" class="back-button">&larr; Back to Orders</button>
+
+  <h2 *ngIf="!loading && order">Order Details: {{ order.orderNumber }}</h2>
+
+  <div *ngIf="loading" class="loading-message">Loading order details...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && order" class="details-card">
+    <div class="detail-group">
+      <label>Order Number:</label>
+      <span>{{ order.orderNumber }}</span>
+    </div>
+    <div class="detail-group">
+      <label>Customer Name:</label>
+      <span>{{ order.customerName }}</span>
+    </div>
+    <div class="detail-group">
+      <label>Order Date:</label>
+      <span>{{ order.orderDate | date:'mediumDate' }}</span>
+    </div>
+    <div class="detail-group">
+      <label>Total Amount:</label>
+      <span>{{ order.totalAmount | currency:'USD':'symbol':'1.2-2' }}</span>
+    </div>
+    <div class="detail-group">
+      <label>Status:</label>
+      <span class="status-badge status-{{ order.status }}">{{ order.status | titlecase }}</span>
+    </div>
+
+    <h3>Items</h3>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of order.items">
+          <td>{{ item.productName }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td>{{ (item.quantity * item.price) | currency:'USD':'symbol':'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!loading && !error && !order" class="no-order-message">
+    Order not found or could not be loaded.
+  </div>
+</div>
